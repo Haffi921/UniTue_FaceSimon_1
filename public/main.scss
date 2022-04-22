@@ -27,34 +27,22 @@ p {
 .trial_container {
   position: absolute;
   height: 472px;
-  width: 384px;
+  width: 886px;
   top: calc(50% - 236px);
-  left: calc(50% - 192px);
+  left: calc(50% - 443px);
   box-sizing: border-box;
 
-  .distractor_container {
+  .target {
     position: absolute;
-    height: 80%;
-    width: 100%;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    white-space: pre;
-
-    .distractor {
-      color: red;
-      font-size: 74px;
-      font-weight: bolder;
-    }
-  }
-
-  .upper {
     top: 0;
-  }
 
-  .lower {
-    bottom: 0;
+    &.left {
+      left: 0;
+    }
+
+    &.right {
+      right: 0;
+    }
   }
 }
 

@@ -67,22 +67,13 @@ export function practice_trial(
   sequence: FaceForTrial[],
   keys: string[]
 ) {
-  function remove_stim() {
-    const stim = document.getElementsByClassName("trial_container")[0];
-    if (stim !== undefined) {
-      stim.remove();
-    }
-  }
-
   const get = jsPsych.timelineVariable;
 
   function createDisplay(): string {
     return (
       "<div class='trial_container'>" +
-      `<img class='target' src='${get("img")}' />` +
-      `<div class='distractor_container ${get("position")}'>` +
-      `<p class="distractor">${get("distractor")}</p>` +
-      "</div></div>"
+      `<img class='target ${get("position")}' src='${get("img")}' />` +
+      "</div>"
     );
   }
 
@@ -114,6 +105,13 @@ export function practice_trial(
       };
     },
     on_load() {
+      function remove_stim() {
+        const stim = document.getElementsByClassName("trial_container")[0];
+        if (stim !== undefined) {
+          stim.remove();
+        }
+      }
+
       setTimeout(remove_stim, 1000);
     },
     on_finish(data: any) {

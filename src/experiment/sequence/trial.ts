@@ -94,10 +94,8 @@ export function trial(
   function createDisplay(): string {
     return (
       "<div class='trial_container'>" +
-      `<img class='target' src='${get("img")}' />` +
-      `<div class='distractor_container ${get("position")}'>` +
-      `<p class="distractor">${get("distractor")}</p>` +
-      "</div></div>"
+      `<img class='target ${get("position")}' src='${get("img")}' />` +
+      "</div>"
     );
   }
 

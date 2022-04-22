@@ -1,6 +1,6 @@
 import { sortBy, shuffle, cloneDeep, flatten } from "lodash";
 
-import { FaceForRating } from "./faces";
+import { FaceForRating, KEYS } from "./faces";
 
 enum ProportionCongruency {
   mostly_congruent = "Mostly Congruent",
@@ -18,8 +18,8 @@ enum Congruency {
 }
 
 enum Position {
-  Up = "upper",
-  Down = "lower",
+  Left = "left",
+  Right = "right",
 }
 
 interface FaceForStroop extends FaceForRating {
@@ -29,7 +29,6 @@ interface FaceForStroop extends FaceForRating {
 export interface FaceForTrial extends FaceForStroop {
   congruency: Congruency;
   position: Position;
-  distractor: string;
   block_type: string;
   block_nr?: number;
   trial_nr: number;
@@ -37,8 +36,8 @@ export interface FaceForTrial extends FaceForStroop {
 
 export function select_faces(faces: FaceForRating[]): FaceForRating[][] {
   const gender_equalizer = {
-    male: 15,
-    female: 15,
+    male: 20,
+    female: 20,
   };
 
   const selected_faces = [],
@@ -128,18 +127,30 @@ function create_practice_block(faces: FaceForStroop[]): FaceForTrial[] {
         rotating_index.indexArray[index] === 0
           ? Congruency.congruent
           : Congruency.incongruent;
-      face.position =
-        Math.round(Math.random()) === 0 ? Position.Up : Position.Down;
 
       if (face.gender === "male") {
-        face.distractor =
-          rotating_index.indexArray[index] === 0 ? "MAN" : "WOMAN";
+        if (KEYS[0] === "d")
+          face.position =
+            rotating_index.indexArray[index] === 0
+              ? Position.Left
+              : Position.Right;
+        else if (KEYS[0] === "l")
+          face.position =
+            rotating_index.indexArray[index] === 0
+              ? Position.Right
+              : Position.Left;
       } else {
-        face.distractor =
-          rotating_index.indexArray[index] === 0 ? "WOMAN" : "MAN";
+        if (KEYS[1] === "d")
+          face.position =
+            rotating_index.indexArray[index] === 0
+              ? Position.Left
+              : Position.Right;
+        else if (KEYS[1] === "l")
+          face.position =
+            rotating_index.indexArray[index] === 0
+              ? Position.Right
+              : Position.Left;
       }
-
-      face.trial_nr = parseInt(index);
 
       face.block_type = "practice";
     }
@@ -181,20 +192,32 @@ function create_trial_block(faces: FaceForStroop[]): FaceForTrial[] {
             rotating_index.indexArray[index] === 0
               ? Congruency.congruent
               : Congruency.incongruent;
-          face.position =
-            Math.round(Math.random()) === 0 ? Position.Up : Position.Down;
 
           if (face.gender === "male") {
-            face.distractor =
-              rotating_index.indexArray[index] === 0 ? "MAN" : "WOMAN";
+            if (KEYS[0] === "d")
+              face.position =
+                rotating_index.indexArray[index] === 0
+                  ? Position.Left
+                  : Position.Right;
+            else if (KEYS[0] === "l")
+              face.position =
+                rotating_index.indexArray[index] === 0
+                  ? Position.Right
+                  : Position.Left;
           } else {
-            face.distractor =
-              rotating_index.indexArray[index] === 0 ? "WOMAN" : "MAN";
+            if (KEYS[1] === "d")
+              face.position =
+                rotating_index.indexArray[index] === 0
+                  ? Position.Left
+                  : Position.Right;
+            else if (KEYS[1] === "l")
+              face.position =
+                rotating_index.indexArray[index] === 0
+                  ? Position.Right
+                  : Position.Left;
           }
 
           face.block_type = "trial";
-          face.block_nr = i + 1;
-          face.trial_nr = index;
 
           return face;
         }
@@ -202,7 +225,7 @@ function create_trial_block(faces: FaceForStroop[]): FaceForTrial[] {
 
       sequence[i].push(...shuffle(trial_faces));
 
-      rotating_index.forward(3);
+      rotating_index.forward(4);
     }
   }
 
@@ -215,10 +238,19 @@ function create_trial_block(faces: FaceForStroop[]): FaceForTrial[] {
 
 export function get_block(
   faces: FaceForRating[],
+  block: number = 0,
   practice: boolean = false
 ): FaceForTrial[] {
   if (practice) {
-    return create_practice_block(prepare_PC(faces));
+    return create_practice_block(prepare_PC(faces)).map((face, index) => {
+      face.trial_nr = index;
+      face.block_nr = 0;
+      return face;
+    });
   }
-  return create_trial_block(prepare_PC(faces));
+  return create_trial_block(prepare_PC(faces)).map((face, index) => {
+    face.trial_nr = index;
+    face.block_nr = block;
+    return face;
+  });
 }

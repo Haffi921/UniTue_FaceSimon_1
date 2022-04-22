@@ -31,17 +31,17 @@ async function run() {
     {
       type: BrowserCheckPlugin,
       minimum_height: 625,
-      minimum_width: 625,
+      minimum_width: 886,
     },
     prerating(jsPsych, FACES, () => {
       const [PRACTICE_FACES, TRIAL_FACES] = select_faces(FACES);
 
-      const PRACTICE_SEQUENCE = get_block(PRACTICE_FACES, true);
+      const PRACTICE_SEQUENCE = get_block(PRACTICE_FACES, 0, true);
 
       const TRIAL_SEQUENCE = [];
 
-      for (let i = 0; i < 5; ++i) {
-        TRIAL_SEQUENCE.push(get_block(TRIAL_FACES));
+      for (let i = 0; i < 4; ++i) {
+        TRIAL_SEQUENCE.push(get_block(TRIAL_FACES, i + 1));
       }
 
       jsPsych.addNodeToEndOfTimeline(
