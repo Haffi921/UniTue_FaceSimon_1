@@ -1,0 +1,17 @@
+{
+    "uuid": "0703bf69-4e9b-4308-8baa-14bd9b6626f7",
+    "title": "CTFW Stroop Task",
+    "dirName": "ctfw_stroop_task",
+    "componentList": [
+        {
+            "uuid": "c4d04bb4-9483-4dae-91b0-ea88088b35c8",
+            "title": "informedConsent",
+            "htmlFilePath": "informedConsent/index.html"
+        },
+        {
+            "uuid": "cfd16089-8f56-48c0-b8b0-60d56e5a4164",
+            "title": "experiment",
+            "htmlFilePath": "experiment/index.html"
+        }
+    ]
+}

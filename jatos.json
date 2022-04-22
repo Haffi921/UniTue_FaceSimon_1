@@ -1,0 +1,7 @@
+{
+  "title": "CTFW Stroop Task",
+  "components": {
+    "informedConsent": "src/informedConsent",
+    "experiment": "src/experiment"
+  }
+}
