@@ -1,15 +1,15 @@
 {
-    "uuid": "0703bf69-4e9b-4308-8baa-14bd9b6626f7",
-    "title": "CTFW Stroop Task",
-    "dirName": "ctfw_stroop_task",
+    "uuid": "ea6602d9-ea8d-4d43-b0e1-7fbba6504fa0",
+    "title": "FaceSimon Task",
+    "dirName": "facesimon_task",
     "componentList": [
         {
-            "uuid": "c4d04bb4-9483-4dae-91b0-ea88088b35c8",
+            "uuid": "922ecb07-618a-467d-bc26-022a0dee939f",
             "title": "informedConsent",
             "htmlFilePath": "informedConsent/index.html"
         },
         {
-            "uuid": "cfd16089-8f56-48c0-b8b0-60d56e5a4164",
+            "uuid": "4bfd5fc1-58cd-452a-a001-018e4164dad7",
             "title": "experiment",
             "htmlFilePath": "experiment/index.html"
         }

@@ -21,6 +21,17 @@ async function run() {
     },
   });
 
+  jsPsych.data.addProperties({
+    subject: jatos.studyResultId,
+    workerID: jatos.workerId,
+    prolificPID: jatos.urlQueryParameters.PROLIFIC_PID,
+    prolificSID: jatos.urlQueryParameters.STUDY_ID,
+    prolificSEID: jatos.urlQueryParameters.SESSION_ID,
+
+    male_key: KEYS[0],
+    female_key: KEYS[1],
+  });
+
   const timeline = [
     {
       type: PreloadPlugin,
