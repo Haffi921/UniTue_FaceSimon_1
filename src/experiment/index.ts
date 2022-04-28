@@ -59,7 +59,11 @@ async function run() {
         practice_trial(jsPsych, PRACTICE_SEQUENCE, KEYS)
       );
       jsPsych.addNodeToEndOfTimeline(trial(jsPsych, TRIAL_SEQUENCE, KEYS));
-      jsPsych.addNodeToEndOfTimeline(postrating(jsPsych, TRIAL_FACES));
+      jsPsych.addNodeToEndOfTimeline(
+        postrating(jsPsych, TRIAL_FACES, () => {
+          for (const face of FACES) jsPsych.data.get().push(face);
+        })
+      );
     }),
   ];
 

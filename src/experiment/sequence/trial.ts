@@ -118,7 +118,7 @@ export function trial(
         distractor: get("distractor"),
         target: get("img"),
         gender: get("gender"),
-        rating: get("rating"),
+        prerating: get("rating"),
         proportion_congruency: get("proportion_congruency"),
         congruency: get("congruency"),
         position: get("position"),

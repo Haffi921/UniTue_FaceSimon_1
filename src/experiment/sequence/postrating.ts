@@ -45,7 +45,11 @@ function instructions() {
   };
 }
 
-export function postrating(jsPsych: JsPsych, faces: FaceForRating[]) {
+export function postrating(
+  jsPsych: JsPsych,
+  faces: FaceForRating[],
+  on_finish: () => void
+) {
   const get = jsPsych.timelineVariable;
   return {
     timeline: [
@@ -73,6 +77,7 @@ export function postrating(jsPsych: JsPsych, faces: FaceForRating[]) {
         ],
         timeline_variables: faces,
         randomize_order: true,
+        on_timeline_finish: on_finish,
       },
     ],
   };
