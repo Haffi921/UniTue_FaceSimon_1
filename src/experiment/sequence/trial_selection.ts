@@ -34,27 +34,6 @@ export interface FaceForTrial extends FaceForStroop {
   trial_nr: number;
 }
 
-export function select_faces(faces: FaceForRating[]): FaceForRating[][] {
-  const gender_equalizer = {
-    male: 20,
-    female: 20,
-  };
-
-  const selected_faces = [],
-    practice_faces = [];
-
-  for (const face of sortBy(shuffle(faces), ["prerating"])) {
-    if (gender_equalizer[face.gender] > 0) {
-      selected_faces.push(face);
-      --gender_equalizer[face.gender];
-    } else {
-      practice_faces.push(face);
-    }
-  }
-
-  return [practice_faces, selected_faces];
-}
-
 function prepare_PC(faces: FaceForRating[]): FaceForStroop[] {
   const pc_faces = {
     male: shuffle(faces.filter((face: FaceForTrial) => face.gender === "male")),
@@ -81,6 +60,31 @@ function prepare_PC(faces: FaceForRating[]): FaceForStroop[] {
     ...(<FaceForStroop[]>pc_faces.male),
     ...(<FaceForStroop[]>pc_faces.female),
   ]);
+}
+
+export function select_faces(faces: FaceForRating[]): FaceForStroop[][] {
+  const gender_equalizer = {
+    male: 20,
+    female: 20,
+  };
+
+  const selected_faces = [],
+    practice_faces = [];
+
+  const sortedFaces = sortBy(shuffle(faces), (face) =>
+    Math.abs(face.prerating)
+  );
+
+  for (const face of sortedFaces) {
+    if (gender_equalizer[face.gender] > 0) {
+      selected_faces.push(face);
+      --gender_equalizer[face.gender];
+    } else {
+      practice_faces.push(face);
+    }
+  }
+
+  return [prepare_PC(practice_faces), prepare_PC(selected_faces)];
 }
 
 class RotatingIndexArray {
@@ -237,18 +241,18 @@ function create_trial_block(faces: FaceForStroop[]): FaceForTrial[] {
 }
 
 export function get_block(
-  faces: FaceForRating[],
+  faces: FaceForStroop[],
   block: number = 0,
   practice: boolean = false
 ): FaceForTrial[] {
   if (practice) {
-    return create_practice_block(prepare_PC(faces)).map((face, index) => {
+    return create_practice_block(faces).map((face, index) => {
       face.trial_nr = index;
       face.block_nr = 0;
       return face;
     });
   }
-  return create_trial_block(prepare_PC(faces)).map((face, index) => {
+  return create_trial_block(faces).map((face, index) => {
     face.trial_nr = index;
     face.block_nr = block;
     return face;
