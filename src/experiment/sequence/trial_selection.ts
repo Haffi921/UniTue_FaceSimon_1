@@ -247,13 +247,13 @@ export function get_block(
 ): FaceForTrial[] {
   if (practice) {
     return create_practice_block(faces).map((face, index) => {
-      face.trial_nr = index;
+      face.trial_nr = index + 1;
       face.block_nr = 0;
       return face;
     });
   }
   return create_trial_block(faces).map((face, index) => {
-    face.trial_nr = index;
+    face.trial_nr = index + 1;
     face.block_nr = block;
     return face;
   });
