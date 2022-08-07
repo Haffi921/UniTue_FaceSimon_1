@@ -1,4 +1,4 @@
 /node_modules/**
 design-docs
-dist
+dist*
 *.csv
