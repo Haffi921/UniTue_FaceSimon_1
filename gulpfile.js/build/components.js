@@ -1,3 +1,5 @@
+const { resolve } = require("path");
+
 // Gulp
 const { parallel, src, dest } = require("gulp");
 const uglify = require("gulp-uglify");
@@ -59,32 +61,29 @@ function css(dest_path) {
   };
 }
 
-function html(title, root, path = "") {
+function html(title, entry_name, dest_path) {
   return function html() {
-    return (
-      src("public/index.html")
-        .pipe(replace(/(style.css|index.js)/g, path + "/$1"))
-        //.pipe(replace(/(style.css|index.js)/g, slug + "/$1"))
-        .pipe(replace(/<title>\w+<\/title>/g, `<title>${title}</title>`))
-        .pipe(dest(root + "/" + path))
-    );
+    return src("public/index.html")
+      .pipe(replace(/(style.css|index.js)/g, entry_name + "/$1"))
+      .pipe(replace(/<title>\w+<\/title>/g, `<title>${title}</title>`))
+      .pipe(dest(dest_path));
   };
 }
 
-function createComponent(title, component, root, path = "") {
+function createComponent(title, entry_name, entry_path, dest_path) {
+  const component_path = resolve(dest_path, entry_name);
   return parallel(
-    javascript(component, root + "/" + path),
-    css(root + "/" + path),
-    html(title, root, path)
+    javascript(entry_path, component_path),
+    css(component_path),
+    html(title, entry_name, component_path)
   );
 }
 
-function createComponents(title, entries, path) {
+function createComponents(title, entries, dest_path) {
   const tasks = [];
   const entryList = Object.entries(entries);
-  for (let [name, file] of entryList) {
-    // const dest_path = entryList.length === 1 ? path : `${path}/${name}`;
-    tasks.push(createComponent(title, file, path, name));
+  for (let [entry_name, entry_path] of entryList) {
+    tasks.push(createComponent(title, entry_name, entry_path, dest_path));
   }
   return parallel(...tasks);
 }

@@ -2,25 +2,21 @@ const path = require("path");
 const fs = require("fs");
 
 function resolveEntry(entry) {
-  let resolved_entry = false;
-  try {
-    if (!fs.lstatSync(entry).isFile()) {
-      entry = path.resolve(entry, "index.ts");
-    }
-    if (fs.lstatSync(entry).isFile()) {
-      resolved_entry = entry;
-    }
-  } catch (e) {
-    if (e.code === "ENOENT") {
+  const possible = {
+    files: ["", "index"],
+    endings: [".ts", ".js"],
+  };
+
+  for (const ending of possible.endings) {
+    for (const file of possible.files) {
+      const full_path = path.resolve(entry, file) + ending;
       try {
-        entry += ".ts";
-        if (fs.lstatSync(entry).isFile()) {
-          resolved_entry = entry;
-        }
+        if (fs.lstatSync(full_path).isFile()) return full_path;
       } catch (e) {}
     }
   }
-  return resolved_entry;
+
+  return false;
 }
 
 module.exports.getEntries = function (entryList) {

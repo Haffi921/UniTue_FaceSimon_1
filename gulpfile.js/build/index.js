@@ -9,10 +9,10 @@ const { experiment_title, slug, entries, jatos_config } = require("../jatos");
 
 const BUILD_DIR = "dist";
 
-const component_dest = `${BUILD_DIR}/source/${slug}`;
+const dest_path = `${BUILD_DIR}/source/${slug}`;
 
 function additionalResources() {
-  return src("./assets/**/*", { base: "./assets/" }).pipe(dest(component_dest));
+  return src("./assets/**/*", { base: "./assets/" }).pipe(dest(dest_path));
 }
 
 function createJASFile() {
@@ -29,7 +29,7 @@ function zip() {
 
 module.exports = series(
   parallel(
-    createComponents(experiment_title, entries, component_dest),
+    createComponents(experiment_title, entries, dest_path),
     additionalResources,
     createJASFile
   ),
